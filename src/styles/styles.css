@@ -46,7 +46,7 @@ h1{
 #colorGradient {
     -webkit-appearance: none;
     padding: 0;
-    border: none;
+    border: 1px solid white;
     border-radius: 50%;
     width: 80px;
     height: 80px;
