@@ -1,80 +1,85 @@
+const defaultSize = 33;
+const defaultColor = "white";
+const defaultMode = "color";
 
+let currentSize = defaultSize;
+let currentColor = defaultColor;
+let currentMode = defaultMode;
 
+function updateSize(newSize)  {
+    currentSize = newSize;
+}
 
+function updateColor(newColor) {
+    currentColor = newColor;
+}
 
+function updateMode(newMode) {
+    currentMode = newMode;
+}
 
+const color = document.getElementById("colorGradient");
+const colorMode = document.getElementById("color");
+const rainbowMode = document.getElementById("rainbow");
+const redGreenBlue = document.getElementById("redGreenBlue");
+const eraser = document.getElementById("eraser");
+const clear = document.getElementById("clear");
+const range = document.getElementById("range");
+const draw = document.getElementById("draw");
 
-//Create Divs using css grid by creating columns and rows using square root of the scale --> 1x1 to 64x64
-function createDivs () {
-    let resolution = 33;
-    let scale = resolution * resolution;
-    const columns = "1fr ";
-    let gridColumns = columns.repeat(Math.sqrt(scale));
+color.addEventListener("change", () => updateColor(color.value));
+colorMode.addEventListener("click", () => updateMode("color"));
+rainbowMode.addEventListener("click", () => updateMode("rainbow"));
+redGreenBlue.addEventListener("click", () => updateMode("redGreebBlue"));
+eraser.addEventListener("click", () => updateMode("eraser"));
+clear.addEventListener("click", () => clearDraw());
+range.addEventListener("change", () => changeSize(range.value));
 
+function changeSize(value) {
+    clearDraw(value);
+    setupDraw(value);
+    console.log(value);
+}
 
-        for (let i = 1; i <= (document.getElementById("range").value * document.getElementById("range").value); i++) {
-            const div = document.createElement("div");
-            draw.style.cssText = `grid-template-columns: ${gridColumns}; grid-template-rows: ${gridColumns}`
-            draw.appendChild(div);
-            div.style.cssText = `background-color: white;`;
-            console.log(scale);    
-            
-            //missing this! must understand how to reset draw by selecting scale
-            document.getElementById("range").addEventListener("mouseout", function() {
-                if (document.getElementById("range").value != resolution) {
-                    resolution = document.getElementById("range").value;
-                    i = 1;
-                }
+function clearDraw(value) {
+    draw.innerHTML = "";
+}
+
+function setupDraw(value) {
+    draw.style.gridTemplateRows = `repeat(${value}, 1fr)`;
+    draw.style.gridTemplateColumns = `repeat(${value}, 1fr)`;
+
+    for (let i = 1; i <= value * value; i++) {
+        const div = document.createElement("div");
+        div.addEventListener("mouseover", changeColor);
+        draw.appendChild(div);
+    }
+}
+
+function changeColor(e) {
+    if (currentMode === "color") {
+        e.target.style.backgroundColor = currentColor;
+    } else if (currentMode === "rainbow") {
+        e.target.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`;
+    } else if (currentMode === "redGreenBlue") {
+        if ((value - 1) % 3 == 0) {
+            div.addEventListener("mouseover", function(){
+                e.target.style.backgroundColor = `red`;
+            }) 
+        } else if ((value + 1) % 3 == 0) {
+            div.addEventListener("mouseover", function(){
+                e.target.style.backgroundColor = `blue`;
             })
-            
-            //draw color mode 
-            document.getElementById(`color`).addEventListener("click", function() {
-                div.addEventListener("mouseover", function(){
-                    div.style.backgroundColor = document.getElementById("colorGradient").value;
-                });
-            });   
-
-            //draw rainbow using random numbers
-            document.getElementById(`rainbow`).addEventListener("click", function() {
-                div.addEventListener("mouseover", function(){
-                    div.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`;
-                });   
-            });
-
-            //draw red green and blue
-            document.getElementById(`redGreenBlue`).addEventListener("click", function() {
-                    if ((i - 1) % 3 == 0) {
-                        div.addEventListener("mouseover", function(){
-                            div.style.backgroundColor = `red`;
-                        }) 
-                    } else if ((i + 1) % 3 == 0) {
-                        div.addEventListener("mouseover", function(){
-                            div.style.backgroundColor = `blue`;
-                        })
-                    } else {
-                        div.addEventListener("mouseover", function(){
-                            div.style.backgroundColor = `green`;
-                        })
-                    }       
+        } else {
+            div.addEventListener("mouseover", function(){
+                e.target.style.backgroundColor = `green`;
             })
-
-            //eraser
-            document.getElementById(`eraser`).addEventListener("click", function() {
-                div.addEventListener("mouseover", function(){
-                    div.style.backgroundColor = `white`;
-                })   
-            })
-
-            //clear draw by pessing button "clear"
-            document.getElementById(`clear`).addEventListener("click", () => div.style.cssText = `background-color: white;`);
         }
-        
-        
-}  
+    } else if (currentMode === "eraser") {
+        e.target.style.backgroundColor = "white";
+    }
+}
 
-
-
-
-
-
-createDivs();
+window.onload = () => {
+    setupDraw(defaultSize);
+}
