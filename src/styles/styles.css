@@ -4,16 +4,17 @@
     height: 100%;
     text-align: center;
     font-family: sans-serif;
+    width: 100%;
 }
 
 h1{
     margin-top: 50px;
     color: white;
+    font-size: 3rem;
 }
 
 #main {
     display: flex;
-    border: 2px solid white;
     border-radius: 10px;
     margin: auto;
     max-width: 700px;
@@ -27,6 +28,7 @@ h1{
     align-items: space-between;
     flex-wrap: wrap;
     max-width: 30%;
+    margin-right: 50px;
 }
 
 #container {
@@ -76,11 +78,18 @@ h1{
     height: 40px;
     margin: 0 auto;
     border-radius: 10px;
+    border: 2px solid black;
+}
+
+.btn:hover {
+    transform: scale(1.1);
 }
 
 .btn.focus {
     background-color: black;
     color: white;
+    border: 2px solid white;
+    transform: scale(1.1);
 }
 
 #clear:active {
@@ -100,4 +109,28 @@ h1{
 #range {
     width: 250px;
     margin: auto;
+}
+
+@media screen and (max-width: 900px) {
+    #main {
+        height: 100%;
+    }
+
+    #container {
+        position: absolute;
+        margin: 0 auto;
+        max-height: 90%;
+    }
+
+    #draw {
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    #select {
+        position: absolute;
+        top: 100%;
+        left: 37%;
+        gap: 20px;
+    }
 }

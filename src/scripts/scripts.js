@@ -16,6 +16,27 @@ function updateColor(newColor) {
 
 function updateMode(newMode) {
     currentMode = newMode;
+    if (currentMode === "color") {
+        colorMode.classList.add("focus");
+        rainbowMode.classList.remove("focus");
+        redGreenBlue.classList.remove("focus");
+        eraser.classList.remove("focus");
+    } else if (currentMode === "rainbow") {
+        rainbowMode.classList.add("focus");
+        colorMode.classList.remove("focus");
+        redGreenBlue.classList.remove("focus");
+        eraser.classList.remove("focus");
+    } else if (currentMode === "redGreenBlue") {
+        rainbowMode.classList.remove("focus");
+        colorMode.classList.remove("focus");
+        redGreenBlue.classList.add("focus");
+        eraser.classList.remove("focus");
+    } else if (currentMode = "eraser") {
+        rainbowMode.classList.remove("focus");
+        colorMode.classList.remove("focus");
+        redGreenBlue.classList.remove("focus");
+        eraser.classList.add("focus");
+    }
 }
 
 const color = document.getElementById("colorGradient");
@@ -66,22 +87,10 @@ function setupDraw(value) {
 
 function changeColor(e) {
     if (currentMode === "color") {
-        e.target.style.backgroundColor = currentColor;
-        colorMode.classList.add("focus");
-        rainbowMode.classList.remove("focus");
-        redGreenBlue.classList.remove("focus");
-        eraser.classList.remove("focus");
+        e.target.style.backgroundColor = currentColor;      
     } else if (currentMode === "rainbow") {
-        e.target.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`;
-        rainbowMode.classList.add("focus");
-        colorMode.classList.remove("focus");
-        redGreenBlue.classList.remove("focus");
-        eraser.classList.remove("focus");
+        e.target.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`; 
     } else if (currentMode === "redGreenBlue") {
-        rainbowMode.classList.remove("focus");
-        colorMode.classList.remove("focus");
-        redGreenBlue.classList.add("focus");
-        eraser.classList.remove("focus");
         if ((value - 1) % 3 == 0) {
             div.addEventListener("mouseover", function(){
                 e.target.style.backgroundColor = `red`;
@@ -95,15 +104,12 @@ function changeColor(e) {
                 e.target.style.backgroundColor = `green`;
             })
         }
-    } else if (currentMode === "eraser") {
-        rainbowMode.classList.remove("focus");
-        colorMode.classList.remove("focus");
-        redGreenBlue.classList.remove("focus");
-        eraser.classList.add("focus");
+    } else if (currentMode === "eraser") {      
         e.target.style.backgroundColor = "white";
     }
 }
 
 window.onload = () => {
     setupDraw(defaultSize);
+    updateMode(defaultMode);
 } 
