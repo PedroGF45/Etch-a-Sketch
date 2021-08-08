@@ -85,7 +85,7 @@ function setupDraw(value) {
     for (let i = 1; i <= value * value; i++) {
         const div = document.createElement("div");
         div.style.backgroundColor = "white";
-        div.addEventListener("mouseover", changeColor);
+        draw.addEventListener("mousedown", () => div.addEventListener("mouseover", changeColor));
         draw.appendChild(div);
     }
 }
