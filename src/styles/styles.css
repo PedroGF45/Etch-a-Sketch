@@ -78,8 +78,23 @@ h1{
     border-radius: 10px;
 }
 
+.btn.focus {
+    background-color: black;
+    color: white;
+}
+
+#clear:active {
+    background-color: black;
+    color: white;
+}
+
 #scaleDraw {
     margin-top: 0px;
+}
+
+#scale {
+    margin-bottom: -5px;
+    color: white;
 }
 
 #range {

@@ -1,5 +1,5 @@
 const defaultSize = 33;
-const defaultColor = "white";
+const defaultColor = "black";
 const defaultMode = "color";
 
 let currentSize = defaultSize;
@@ -26,24 +26,31 @@ const eraser = document.getElementById("eraser");
 const clear = document.getElementById("clear");
 const range = document.getElementById("range");
 const draw = document.getElementById("draw");
+const p = document.getElementById("scale");
+p.innerText = "33 x 33";
 
 color.addEventListener("change", () => updateColor(color.value));
 colorMode.addEventListener("click", () => updateMode("color"));
 rainbowMode.addEventListener("click", () => updateMode("rainbow"));
-redGreenBlue.addEventListener("click", () => updateMode("redGreebBlue"));
+redGreenBlue.addEventListener("click", () => updateMode("redGreenBlue"));
 eraser.addEventListener("click", () => updateMode("eraser"));
-clear.addEventListener("click", () => clearDraw());
+clear.addEventListener("click", () => changeSize(range.value));
 range.addEventListener("change", () => changeSize(range.value));
+range.addEventListener("mousemove", () => showScale(range.value));
+
+function showScale(value) {
+    p.innerText = `${value} x ${value}`;
+};
 
 function changeSize(value) {
-    clearDraw(value);
+    clearDraw();
     setupDraw(value);
     console.log(value);
-}
+};
 
-function clearDraw(value) {
+function clearDraw() {
     draw.innerHTML = "";
-}
+};
 
 function setupDraw(value) {
     draw.style.gridTemplateRows = `repeat(${value}, 1fr)`;
@@ -51,6 +58,7 @@ function setupDraw(value) {
 
     for (let i = 1; i <= value * value; i++) {
         const div = document.createElement("div");
+        div.style.backgroundColor = "white";
         div.addEventListener("mouseover", changeColor);
         draw.appendChild(div);
     }
@@ -59,9 +67,21 @@ function setupDraw(value) {
 function changeColor(e) {
     if (currentMode === "color") {
         e.target.style.backgroundColor = currentColor;
+        colorMode.classList.add("focus");
+        rainbowMode.classList.remove("focus");
+        redGreenBlue.classList.remove("focus");
+        eraser.classList.remove("focus");
     } else if (currentMode === "rainbow") {
         e.target.style.backgroundColor = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`;
+        rainbowMode.classList.add("focus");
+        colorMode.classList.remove("focus");
+        redGreenBlue.classList.remove("focus");
+        eraser.classList.remove("focus");
     } else if (currentMode === "redGreenBlue") {
+        rainbowMode.classList.remove("focus");
+        colorMode.classList.remove("focus");
+        redGreenBlue.classList.add("focus");
+        eraser.classList.remove("focus");
         if ((value - 1) % 3 == 0) {
             div.addEventListener("mouseover", function(){
                 e.target.style.backgroundColor = `red`;
@@ -76,10 +96,14 @@ function changeColor(e) {
             })
         }
     } else if (currentMode === "eraser") {
+        rainbowMode.classList.remove("focus");
+        colorMode.classList.remove("focus");
+        redGreenBlue.classList.remove("focus");
+        eraser.classList.add("focus");
         e.target.style.backgroundColor = "white";
     }
 }
 
 window.onload = () => {
     setupDraw(defaultSize);
-}
+} 
