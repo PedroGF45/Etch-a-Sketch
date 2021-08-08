@@ -1,3 +1,4 @@
+//Define default variables fort starting size,color and mode
 const defaultSize = 33;
 const defaultColor = "black";
 const defaultMode = "color";
@@ -14,6 +15,7 @@ function updateColor(newColor) {
     currentColor = newColor;
 }
 
+//update mode by selection new mode and activating css references to animate the buttons
 function updateMode(newMode) {
     currentMode = newMode;
     if (currentMode === "color") {
@@ -39,6 +41,7 @@ function updateMode(newMode) {
     }
 }
 
+//get elements and defining a const variable
 const color = document.getElementById("colorGradient");
 const colorMode = document.getElementById("color");
 const rainbowMode = document.getElementById("rainbow");
@@ -73,6 +76,8 @@ function clearDraw() {
     draw.innerHTML = "";
 };
 
+
+//build the draw using grid css properties
 function setupDraw(value) {
     draw.style.gridTemplateRows = `repeat(${value}, 1fr)`;
     draw.style.gridTemplateColumns = `repeat(${value}, 1fr)`;
@@ -85,6 +90,8 @@ function setupDraw(value) {
     }
 }
 
+
+//changing color by selecting buttons
 function changeColor(e) {
     if (currentMode === "color") {
         e.target.style.backgroundColor = currentColor;      
@@ -109,6 +116,7 @@ function changeColor(e) {
     }
 }
 
+//default build of the page
 window.onload = () => {
     setupDraw(defaultSize);
     updateMode(defaultMode);
